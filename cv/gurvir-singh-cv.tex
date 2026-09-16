@@ -1,0 +1,146 @@
+% Gurvir Singh — one-page CV
+%
+% Build (from the project root, with a LaTeX distribution such as MiKTeX):
+%   pdflatex -output-directory=cv/build cv/gurvir-singh-cv.tex
+% then copy cv/build/gurvir-singh-cv.pdf to public/files/gurvir-singh-cv.pdf
+%
+% Typography follows a classic LaTeX academic CV: Computer Modern (T1 / cm-super),
+% 11pt body, bold small-caps name and section headings, full-width section rules.
+
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+% Use the scalable Type 1 cm-super fonts (some installations do not map them by default).
+\pdfmapfile{+cm-super-t1.map}
+\usepackage[a4paper, left=0.8in, right=0.8in, top=0.72in, bottom=0.55in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[hidelinks,
+  pdftitle={Gurvir Singh - Curriculum Vitae},
+  pdfauthor={Gurvir Singh}]{hyperref}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% ── Section headings: large bold small caps over a full-width rule ───────────
+\titleformat{\section}{\Large\bfseries\scshape\raggedright}{}{0pt}{}[{\vspace{-2pt}\titlerule[1.3pt]}]
+\titlespacing*{\section}{0pt}{9pt}{5pt}
+
+% ── Entries ─────────────────────────────────────────────────────────────────
+% \entry{bold left}{bold right}
+\newcommand{\entry}[2]{\hspace*{6pt}\textbf{#1}\hfill\textbf{#2}\par}
+% \detail{text}{right-aligned text}, indented under an entry
+\newcommand{\detail}[2]{\hspace*{27pt}#1\hfill#2\par}
+% \project{name}{url}{note}{stack}
+\newcommand{\project}[4]{%
+  \hspace*{6pt}\textbf{\href{#2}{#1}}#3\hfill\textit{#4}\par}
+
+% Bullet lists
+\setlist[itemize]{label=$\bullet$, leftmargin=34pt, labelsep=6pt,
+  topsep=2pt, itemsep=1pt, parsep=0pt, partopsep=0pt}
+\newenvironment{projectitems}
+  {\begin{itemize}[topsep=1pt, itemsep=0.5pt]}
+  {\end{itemize}\vspace{4pt}}
+
+\begin{document}
+
+% ── Name and contact ────────────────────────────────────────────────────────
+\begin{center}
+  {\LARGE\bfseries\scshape Gurvir Singh}\\[2pt]
+  Third-Year Undergraduate Student
+\end{center}
+\vspace{-4pt}
+
+\noindent
+\hspace*{6pt}%
+\begin{tabular}[t]{@{}l@{}}
+  Computer Science \& Engineering\\
+  (Artificial Intelligence \& Data Science)\\
+  GNA University
+\end{tabular}%
+\hfill
+\begin{tabular}[t]{@{}r@{}}
+  \href{mailto:gurvir.singh.panesar@gmail.com}{gurvir.singh.panesar@gmail.com}\\
+  +91 9592592881\\
+  \href{https://github.com/GurvirSinghH}{github.com/GurvirSinghH}
+\end{tabular}%
+\hspace*{3pt}
+
+% ── Research interests ──────────────────────────────────────────────────────
+\section{Research Interests}
+\begin{itemize}
+  \item Machine learning and data science: data processing, analysis, and visualization
+  \item Physics-informed machine learning and scientific computing (currently learning the basics)
+  \item Intelligent systems: applying AI/ML methods within practical software systems
+\end{itemize}
+
+% ── Education ───────────────────────────────────────────────────────────────
+\section{Education}
+\entry{GNA University}{Expected 2028}
+\detail{B.Tech, Computer Science \& Engineering (Artificial Intelligence \& Data Science)}{}
+\detail{Third year}{CGPA: 8.13/10}
+\detail{Current coursework: Data Visualization, Theory of Computation,}{}
+\detail{\phantom{Current coursework: }Software Engineering, Computer Graphics}{}
+
+% ── Selected projects ───────────────────────────────────────────────────────
+\section{Selected Projects}
+
+\project{AI Log Intelligence Platform}{https://github.com/GurvirSinghH/AI-Log-Intelligence-Platform}%
+  { (ongoing)}{Python, Streamlit, Pandas, Scikit-learn, Plotly}
+\begin{projectitems}
+  \item Streamlit application that detects and parses Linux auth/syslog and Apache access/error logs,
+        with summary statistics, keyword search, Plotly charts, and an optional Gemini incident report.
+  \item Label-encoded process, module, and host fields plus PID, message length, and hour feed an
+        Isolation Forest anomaly detector; K-Means then clusters the flagged entries.
+\end{projectitems}
+
+\project{Neural Forge (AI Blender Assistant)}{https://github.com/GurvirSinghH/neural-forge}%
+  {}{Python, Blender Python API, LLM APIs}
+\begin{projectitems}
+  \item Blender add-on that turns natural-language prompts into Blender Python scripts using Gemini,
+        OpenAI, local Ollama models, or any OpenAI-compatible endpoint through one API client.
+  \item Optionally adds scene context (objects, active selection) to prompts, runs generated code, and
+        sends runtime errors back to the model for an automatic fix.
+\end{projectitems}
+
+\project{College Knowledge Base Crawler}{https://github.com/GurvirSinghH/college-rag-assistant}%
+  {}{Python, Requests, BeautifulSoup, lxml, SQLite}
+\begin{projectitems}
+  \item Multi-threaded crawler (worker pool and task queue) with robots.txt compliance, a shared rate
+        limit, URL normalization, and retries with exponential backoff that respect Retry-After.
+  \item Extracts page content and metadata to JSON, downloads linked documents, and records crawl
+        state in SQLite, producing a structured dataset for a future RAG pipeline (not yet built).
+\end{projectitems}
+
+\project{CodeEditor}{https://github.com/GurvirSinghH/CodeEditor}%
+  { (2nd-year project)}{Java, Swing, MySQL, JDBC}
+\begin{projectitems}
+  \item Desktop code editor with multi-tab editing, token-based syntax highlighting for Java, Python,
+        and HTML, line numbers, and find and replace.
+  \item Stores recent files, a code-snippet library, and open-tab sessions in MySQL through JDBC
+        data-access objects, restoring the previous session on startup.
+\end{projectitems}
+\vspace{-4pt}
+
+% ── Technical skills ────────────────────────────────────────────────────────
+\section{Technical Skills}
+\hspace*{6pt}%
+\begin{tabular}{@{}l@{\hspace{14pt}}l@{}}
+  \textit{Programming}        & Python, C, C++, Java\\
+  \textit{Data and ML}        & Machine learning, data processing, data visualization\\
+  \textit{Libraries and tools} & NumPy, Pandas, Scikit-learn, Plotly, Streamlit, Git, GitHub
+\end{tabular}
+
+% ── Current focus ───────────────────────────────────────────────────────────
+\section{Current Focus}
+\begin{itemize}
+  \item Strengthening my machine learning fundamentals, to apply ML across different fields.
+  \item Learning how known physics can be built into model training, e.g.\ through the loss function,
+        and keeping written research notes as I study physics-informed machine learning.
+  \item Early idea, not implemented: whether physics-based models combined with machine learning
+        could help reason about hidden energy states in public Formula 1 telemetry.
+\end{itemize}
+
+\end{document}

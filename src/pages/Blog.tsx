@@ -23,23 +23,21 @@ export default function Blog() {
         <p>Longer pieces on things I am learning, building, and trying to understand.</p>
       </PageHeader>
 
-      <section aria-labelledby="posts">
-        <SectionHeading id="posts">Posts</SectionHeading>
+      <section aria-label="Posts">
         {posts.length > 0 ? (
           <PostList posts={posts} />
         ) : (
-          <p className="text-muted">No posts yet.</p>
+          <p className="border-t border-rule pt-6 text-muted">No posts yet.</p>
         )}
       </section>
 
-      <section aria-labelledby="external-writing" className="mt-16">
-        <SectionHeading id="external-writing">External Writing</SectionHeading>
-        {external.length > 0 ? (
+      {/* Only shown once there is at least one external article. */}
+      {external.length > 0 && (
+        <section aria-labelledby="external-writing" className="mt-12">
+          <SectionHeading id="external-writing">External writing</SectionHeading>
           <ExternalArticleList articles={external} />
-        ) : (
-          <p className="text-muted">No external articles yet.</p>
-        )}
-      </section>
+        </section>
+      )}
     </>
   );
 }

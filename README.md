@@ -80,8 +80,9 @@ For a details page: create a component in `src/pages/project-details/`, register
      (`/blog/what-is-piml`) and may only use lowercase letters, numbers and hyphens.
    - `description` is optional; it is shown on `/blog` and under the post title. `tags` are
      optional and accepted, but not currently displayed.
-   - The title is shown from the frontmatter, so a `# Title` line at the very top of the body
-     is removed automatically. Use `##` and `###` for headings inside the post.
+   - The title is shown from the frontmatter. A `# Title` line at the very top of the body is
+     removed only if it repeats that title; any other `#`, `##` or `###` heading is shown as a
+     heading.
 3. Put any images in `public/images/blog/` and reference them as
    `![Description of the image](/images/blog/figure.png)`.
 4. Run `npm run dev` to preview, or `npm run build` to build. The post appears on `/blog`
@@ -116,8 +117,8 @@ with. They work like blog posts, with a category instead of tags.
      `PIML`, `Machine Learning`, `Scientific Computing`, `Papers` or `Projects` (edit
      `src/data/noteCategories.ts` to change the list).
    - `description` is optional. An optional `slug` overrides the file name in the URL.
-   - As with blog posts, a `# ` line at the very top of the body is treated as the title and
-     removed, so use `##` and `###` for sections.
+   - As with blog posts, a `# ` line at the very top of the body is removed only if it repeats
+     the title; other `#`, `##` and `###` headings are shown as headings.
 3. Run `npm run dev` or `npm run build`. The note appears on `/notes`, newest first.
 
 ## Adding external writing

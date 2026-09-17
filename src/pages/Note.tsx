@@ -17,14 +17,11 @@ export default function NotePage() {
         <h1 className="font-serif text-3xl font-semibold leading-tight text-ink sm:text-4xl">
           {note.title}
         </h1>
-        <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-          <dt className="text-faint">Date</dt>
-          <dd className="text-muted">
-            <time dateTime={note.date}>{formatDate(note.date)}</time>
-          </dd>
-          <dt className="text-faint">Category</dt>
-          <dd className="text-muted">{note.category}</dd>
-        </dl>
+        <p className="mt-3 text-sm text-faint">
+          <time dateTime={note.date}>{formatDate(note.date)}</time>
+          {" · "}
+          {note.category}
+        </p>
       </header>
 
       {/* HTML generated at build time from the note's Markdown file. */}

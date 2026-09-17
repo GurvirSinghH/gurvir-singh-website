@@ -1,16 +1,22 @@
 import PageHeader from "../components/PageHeader";
-import { ProjectList } from "../components/ProjectCard";
+import { ProjectList, type ProjectCardVariant } from "../components/ProjectCard";
 import SectionHeading from "../components/SectionHeading";
 import { projects, type ProjectSection } from "../data/projects";
 import { site } from "../data/site";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-const sections: { id: ProjectSection; title: string; intro?: string }[] = [
-  { id: "selected", title: "Selected Work" },
-  { id: "other", title: "Other Projects" },
+const sections: {
+  id: ProjectSection;
+  title: string;
+  variant: ProjectCardVariant;
+  intro?: string;
+}[] = [
+  { id: "selected", title: "Selected work", variant: "full" },
+  { id: "other", title: "Other projects", variant: "compact" },
   {
     id: "exploration",
     title: "Exploration",
+    variant: "idea",
     intro: "Ideas I am exploring as part of what I am learning, rather than built projects.",
   },
 ];
@@ -35,16 +41,16 @@ export default function Projects() {
           <section
             key={section.id}
             aria-labelledby={section.id}
-            className={i > 0 ? "mt-16" : undefined}
+            className={i > 0 ? "mt-12" : undefined}
           >
             <SectionHeading id={section.id}>{section.title}</SectionHeading>
-            {section.intro && <p className="mb-6 text-muted">{section.intro}</p>}
-            <ProjectList projects={items} />
+            {section.intro && <p className="mb-5 text-muted">{section.intro}</p>}
+            <ProjectList projects={items} variant={section.variant} />
           </section>
         );
       })}
 
-      <p className="mt-16 text-muted">
+      <p className="mt-12 text-muted">
         More repositories are available on{" "}
         <a href={site.github} className="link">
           GitHub

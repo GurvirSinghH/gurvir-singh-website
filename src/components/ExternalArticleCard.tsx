@@ -42,7 +42,7 @@ export default function ExternalArticleCard({ article }: { article: ExternalArti
 /** External articles as a list separated by thin rules. */
 export function ExternalArticleList({ articles }: { articles: ExternalArticle[] }) {
   return (
-    <ol className="max-w-2xl divide-y divide-rule">
+    <ol className="divide-y divide-rule">
       {articles.map((article) => (
         <ExternalArticleCard key={article.url ?? article.title} article={article} />
       ))}

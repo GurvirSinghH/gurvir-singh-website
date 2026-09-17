@@ -6,7 +6,7 @@ export default function PostCard({ post }: { post: BlogPost }) {
   const href = `/blog/${post.slug}`;
 
   return (
-    <li className="py-6 first:pt-0 last:pb-0">
+    <li className="py-6 last:pb-0">
       <h3 className="font-serif text-lg font-semibold leading-snug text-ink">
         <Link to={href} className="hover:text-accent hover:underline">
           {post.title}
@@ -27,10 +27,10 @@ export default function PostCard({ post }: { post: BlogPost }) {
   );
 }
 
-/** Posts as a chronological list separated by thin rules. */
+/** Posts as a chronological list, with a thin rule above and between entries. */
 export function PostList({ posts }: { posts: BlogPost[] }) {
   return (
-    <ol className="max-w-2xl divide-y divide-rule">
+    <ol className="divide-y divide-rule border-t border-rule">
       {posts.map((post) => (
         <PostCard key={post.slug} post={post} />
       ))}

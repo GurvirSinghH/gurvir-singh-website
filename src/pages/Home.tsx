@@ -1,8 +1,9 @@
 import { Link } from "react-router";
-import ProjectCard from "../components/ProjectCard";
 import SectionHeading from "../components/SectionHeading";
-import { getProject } from "../data/projects";
-import { site } from "../data/site";
+import { getProject, projects, type Project } from "../data/projects";
+import { isPlaceholder, site } from "../data/site";
+import { formatDate } from "../lib/formatDate";
+import { notes } from "../lib/notes";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 const learning = [
@@ -20,11 +21,41 @@ const learning = [
   },
 ];
 
+/** "First sentence. Second sentence." → "First sentence." */
+function firstSentence(text: string): string {
+  return text.match(/^.+?[.!?](?=\s|$)/)?.[0] ?? text;
+}
+
+/** Compact, text-only entry for a built project (the Projects page uses ProjectCard). */
+function WorkEntry({ project }: { project: Project }) {
+  return (
+    <li className="py-4 first:pt-0 last:pb-0">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+        <h3 className="font-serif text-lg font-semibold leading-snug text-ink">{project.title}</h3>
+        <p className="text-sm text-faint">{project.status}</p>
+      </div>
+      <p className="mt-1">{firstSentence(project.description)}</p>
+      <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-4 text-sm">
+        <p className="text-muted">{project.technologies.join(" · ")}</p>
+        {project.github && (
+          <a href={project.github} className="link">
+            Code<span className="sr-only">: {project.title} on GitHub</span>{" "}
+            <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </li>
+  );
+}
+
 export default function Home() {
   useDocumentTitle();
 
-  const aiLog = getProject("ai-log-intelligence-platform")!;
-  const ghostBattery = getProject("ghost-battery")!;
+  // Same projects as "Selected Work" on the Projects page.
+  const selectedWork = projects.filter((p) => p.section === "selected");
+  const idea = getProject("ghost-battery");
+  const latestNote = notes[0]; // notes are sorted newest first
+  const university = site.education.institution.split(",")[0];
 
   return (
     <>
@@ -37,7 +68,41 @@ export default function Home() {
           systems.
         </p>
 
-        <div className="mt-6 max-w-2xl space-y-4 text-lg leading-relaxed">
+        <div className="mt-3 flex flex-col text-sm leading-relaxed md:flex-row md:flex-wrap md:justify-between md:gap-x-6">
+          <p>
+            B.Tech CSE (AI &amp; Data Science) <span className="text-faint">·</span>{" "}
+            <span className="whitespace-nowrap">{university}</span>{" "}
+            <span className="text-faint">·</span>{" "}
+            <span className="whitespace-nowrap">{site.education.year}</span>
+          </p>
+          <p>
+            {!isPlaceholder(site.email) && (
+              <>
+                <a href={`mailto:${site.email}`} className="link">
+                  {site.email}
+                </a>
+                {" "}
+                <span className="text-faint">·</span>{" "}
+              </>
+            )}
+            <a href={site.github} className="link">
+              GitHub
+            </a>
+            {" "}
+            <span className="text-faint">·</span>{" "}
+            {site.cvUrl ? (
+              <a href={site.cvUrl} className="link whitespace-nowrap">
+                CV (PDF)
+              </a>
+            ) : (
+              <Link to="/cv" className="link">
+                CV
+              </Link>
+            )}
+          </p>
+        </div>
+
+        <div className="mt-5 space-y-3 leading-relaxed">
           <p>
             I enjoy learning how things work, building with what I learn, and solving problems
             along the way. My interests currently lie in AI/ML, data science, and
@@ -49,32 +114,9 @@ export default function Home() {
             them to others, and help solve problems.
           </p>
         </div>
-
-        <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2">
-          <li>
-            <Link to="/projects" className="link">
-              Projects
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog" className="link">
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link to="/cv" className="link">
-              CV
-            </Link>
-          </li>
-          <li>
-            <a href={site.github} className="link">
-              GitHub
-            </a>
-          </li>
-        </ul>
       </section>
 
-      <section aria-labelledby="currently-learning" className="mt-16">
+      <section aria-labelledby="currently-learning" className="mt-10">
         <SectionHeading
           id="currently-learning"
           aside={
@@ -85,49 +127,69 @@ export default function Home() {
         >
           Currently learning
         </SectionHeading>
-        <dl className="max-w-2xl space-y-4">
+
+        <dl className="space-y-1.5 text-[0.9375rem] leading-normal">
           {learning.map((item) => (
             <div key={item.topic}>
-              <dt className="font-semibold text-ink">{item.topic}</dt>
-              <dd className="mt-0.5 text-muted">{item.note}</dd>
+              <dt className="inline font-semibold text-ink">{item.topic}</dt>{" "}
+              <dd className="inline text-muted">
+                <span aria-hidden="true">— </span>
+                {item.note}
+              </dd>
             </div>
           ))}
         </dl>
+
+        {(latestNote || idea) && (
+          <div className="mt-3 space-y-0.5 border-t border-rule pt-2 text-sm leading-relaxed">
+            {latestNote && (
+              <p>
+                <span className="text-faint">Latest note:</span>{" "}
+                <Link to={`/notes/${latestNote.slug}`} className="link">
+                  {latestNote.title}
+                </Link>{" "}
+                <span className="text-faint">
+                  · <time dateTime={latestNote.date}>{formatDate(latestNote.date)}</time>
+                </span>
+              </p>
+            )}
+            {idea && (
+              <p>
+                <span className="text-faint">Idea:</span>{" "}
+                <span className="font-semibold text-ink">{idea.title}</span>{" "}
+                <span className="text-muted">— {idea.subtitle}</span>
+                {idea.details && (
+                  <>
+                    {" "}
+                    <Link to={idea.details} className="link whitespace-nowrap">
+                      Details<span className="sr-only">: {idea.title}</span>{" "}
+                      <span aria-hidden="true">→</span>
+                    </Link>
+                  </>
+                )}
+              </p>
+            )}
+          </div>
+        )}
       </section>
 
-      <section aria-labelledby="current-work" className="mt-16">
+      <section aria-labelledby="selected-work" className="mt-10">
         <SectionHeading
-          id="current-work"
+          id="selected-work"
           aside={
             <Link to="/projects" className="link">
               All projects
             </Link>
           }
         >
-          Current work
+          Selected work
         </SectionHeading>
 
-        <div className="divide-y divide-rule">
-          <ProjectCard project={aiLog} />
-
-          {/* Not a repository-backed project, so it is not in src/data/projects.ts.
-              TODO: add the hackathon's name and a link to the project if you want them shown. */}
-          <article className="py-7 first:pt-0 last:pb-0">
-            <h3 className="font-serif text-lg font-semibold leading-snug text-ink">
-              Data Visualization Hackathon
-            </h3>
-            <p className="mt-2">
-              A project made for a data visualization hackathon I recently took part in, which
-              received 3rd Prize.
-            </p>
-            <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 text-sm">
-              <dt className="text-faint">Status</dt>
-              <dd className="text-muted">Hackathon project</dd>
-            </dl>
-          </article>
-
-          <ProjectCard project={ghostBattery} />
-        </div>
+        <ul className="divide-y divide-rule">
+          {selectedWork.map((project) => (
+            <WorkEntry key={project.slug} project={project} />
+          ))}
+        </ul>
       </section>
     </>
   );

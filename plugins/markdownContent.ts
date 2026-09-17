@@ -106,8 +106,13 @@ export default function markdownContent(): Plugin {
       const description = data.description ?? "";
       if (typeof description !== "string") fail('"description" must be text.');
 
-      // The title is rendered from frontmatter, so drop a leading "# Title" line.
-      const body = source.slice(match![0].length).replace(/^\s*#[ \t]+[^\n]*\n?/, "");
+      // The title is rendered from frontmatter, so drop a leading "# Title" line when it
+      // repeats that title. Any other "# Heading" is kept as a real heading.
+      const rest = source.slice(match![0].length);
+      const leading = /^\s*#[ \t]+(.*?)(?:[ \t]+#+)?[ \t]*(?:\r?\n|$)/.exec(rest);
+      const sameText = (a: string, b: string) =>
+        a.replace(/\s+/g, " ").trim().toLowerCase() === b.replace(/\s+/g, " ").trim().toLowerCase();
+      const body = leading && sameText(leading[1], title as string) ? rest.slice(leading[0].length) : rest;
       const html = (marked.parse(body, { async: false, gfm: true }) as string).replaceAll(
         "<img ",
         '<img loading="lazy" ',

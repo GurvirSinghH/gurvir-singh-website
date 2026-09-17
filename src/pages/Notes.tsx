@@ -14,7 +14,7 @@ export default function Notes() {
       </PageHeader>
 
       {notes.length > 0 ? (
-        <ol className="max-w-2xl divide-y divide-rule border-t border-rule">
+        <ol className="divide-y divide-rule border-t border-rule">
           {notes.map((note) => (
             <li key={note.slug} className="py-5">
               <h2 className="font-serif text-lg font-semibold leading-snug text-ink">

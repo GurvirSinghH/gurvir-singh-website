@@ -74,6 +74,20 @@
     margin-top: 1.25em;
   }
 
+  /* No extra space above a heading that opens the article. */
+  .article > :first-child {
+    margin-top: 0;
+  }
+
+  /* A "# Heading" inside a post or note: one step above "##". */
+  .article h1 {
+    margin-top: 2.25em;
+    font-family: var(--font-serif);
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
   .article h2 {
     margin-top: 2.25em;
     font-family: var(--font-serif);
@@ -96,6 +110,7 @@
     font-weight: 600;
   }
 
+  .article h1 + *,
   .article h2 + *,
   .article h3 + *,
   .article h4 + * {

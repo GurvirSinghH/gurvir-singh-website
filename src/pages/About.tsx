@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "react-router";
 import PageHeader from "../components/PageHeader";
 import { Value } from "../components/Placeholder";
@@ -5,13 +6,32 @@ import SectionHeading from "../components/SectionHeading";
 import { site } from "../data/site";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-function BulletList({ items }: { items: string[] }) {
+/** "A · B · C". Lines only break between items, so no line starts with "·". */
+function Separated({ items }: { items: string[] }) {
   return (
-    <ul className="list-disc space-y-1 pl-5 marker:text-faint">
-      {items.map((item) => (
-        <li key={item}>{item}</li>
+    <>
+      {items.map((item, i) => (
+        <Fragment key={item}>
+          <span className="whitespace-nowrap">
+            {item}
+            {i < items.length - 1 && " ·"}
+          </span>
+          {i < items.length - 1 && " "}
+        </Fragment>
       ))}
-    </ul>
+    </>
+  );
+}
+
+/** A small grey label with its values on the line below. */
+function LabeledRow({ label, items }: { label: string; items: string[] }) {
+  return (
+    <div>
+      <h3 className="text-sm text-faint">{label}</h3>
+      <p className="mt-0.5 text-[0.9375rem] leading-relaxed">
+        <Separated items={items} />
+      </p>
+    </div>
   );
 }
 
@@ -19,26 +39,14 @@ export default function About() {
   useDocumentTitle("About");
   const { education } = site;
 
-  const educationRows: [string, string][] = [
-    ["Degree", education.degree],
-    ["Specialization", education.specialization],
-    ["Institution", education.institution],
-    ["Year", education.year],
-    ["CGPA", education.cgpa],
-    ["Expected graduation", education.expectedGraduation],
-  ];
-
   return (
     <>
-      <PageHeader title={site.name}>
-        <p>{site.shortDegree}</p>
-      </PageHeader>
+      <PageHeader title="About" />
 
-      <div className="max-w-2xl space-y-4">
+      <div className="max-w-2xl space-y-3 leading-relaxed">
         <p>
           I am a third-year Computer Science student specializing in Artificial Intelligence and
-          Data Science. I spend a lot of my time learning how things work, building with what I
-          learn, and trying to solve problems along the way.
+          Data Science.
         </p>
         <p>
           I am currently exploring machine learning, data science, and physics-informed machine
@@ -62,47 +70,46 @@ export default function About() {
         </p>
       </div>
 
-      <section aria-labelledby="education" className="mt-14">
+      <section aria-labelledby="education" className="mt-12">
         <SectionHeading id="education">Education</SectionHeading>
-        <dl className="grid grid-cols-1 gap-x-6 gap-y-1 sm:grid-cols-[11rem_1fr] sm:gap-y-2">
-          {educationRows.map(([label, value]) => (
-            <div key={label} className="contents">
-              <dt className="mt-2 text-sm text-faint sm:mt-0 sm:text-base">{label}</dt>
-              <dd>
-                <Value value={value} />
-              </dd>
-            </div>
-          ))}
-        </dl>
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
+          <h3 className="font-serif text-lg font-semibold leading-snug text-ink">
+            <Value value={education.institution} />
+          </h3>
+          <p className="text-sm text-faint">
+            Expected <Value value={education.expectedGraduation} />
+          </p>
+        </div>
+        <p className="mt-1">
+          {education.degree}
+          {" "}— {education.specialization}
+        </p>
+        <p className="mt-0.5 text-muted">
+          <Value value={education.year} />
+          {" "}· CGPA <Value value={education.cgpa} />
+        </p>
+        <p className="mt-2 text-sm leading-relaxed">
+          <span className="text-faint">Current coursework:</span>{" "}
+          <span className="text-muted">
+            <Separated items={site.coursework} />
+          </span>
+        </p>
       </section>
 
-      <div className="mt-14 grid gap-14 sm:grid-cols-2 sm:gap-8">
-        <section aria-labelledby="coursework">
-          <SectionHeading id="coursework">Current coursework</SectionHeading>
-          <BulletList items={site.coursework} />
-        </section>
+      <section aria-labelledby="interests" className="mt-12">
+        <SectionHeading id="interests">Interests</SectionHeading>
+        <div className="space-y-3">
+          <LabeledRow label="Current focus" items={site.interests.current} />
+          <LabeledRow label="Also interested in" items={site.interests.broader} />
+        </div>
+      </section>
 
-        <section aria-labelledby="interests">
-          <SectionHeading id="interests">Interests</SectionHeading>
-          <h3 className="text-sm text-faint">Current focus</h3>
-          <div className="mt-2">
-            <BulletList items={site.interests.current} />
-          </div>
-          <h3 className="mt-5 text-sm text-faint">Also interested in</h3>
-          <div className="mt-2">
-            <BulletList items={site.interests.broader} />
-          </div>
-        </section>
-      </div>
-
-      <section aria-labelledby="skills" className="mt-14">
+      <section aria-labelledby="skills" className="mt-12">
         <SectionHeading id="skills">Programming &amp; tools</SectionHeading>
-        <dl className="grid grid-cols-1 gap-x-6 gap-y-1 sm:grid-cols-[11rem_1fr] sm:gap-y-2">
-          <dt className="text-sm text-faint sm:text-base">Languages</dt>
-          <dd>{site.languages.join(" · ")}</dd>
-          <dt className="mt-2 text-sm text-faint sm:mt-0 sm:text-base">ML &amp; data</dt>
-          <dd>{site.mlTools.join(" · ")}</dd>
-        </dl>
+        <div className="space-y-3">
+          <LabeledRow label="Languages" items={site.languages} />
+          <LabeledRow label="ML & data" items={site.mlTools} />
+        </div>
       </section>
     </>
   );

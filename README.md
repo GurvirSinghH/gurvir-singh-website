@@ -1,4 +1,4 @@
-# gurvir-singh-website
+# gurvirsingh
 
 Personal technical website of Gurvir Singh. React + Vite + TypeScript + Tailwind CSS.
 

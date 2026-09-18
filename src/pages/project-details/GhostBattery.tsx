@@ -130,7 +130,7 @@ export default function GhostBattery() {
       </p>
 
       <nav aria-labelledby="contents" className="mt-10 border-y border-rule py-4 text-sm">
-        <h2 id="contents" className="font-semibold text-faint">
+        <h2 id="contents" className="font-serif text-xl font-semibold text-ink">
           Contents
         </h2>
         <ol className="mt-2 grid grid-cols-1 gap-x-6 gap-y-1 min-[400px]:grid-cols-2 sm:grid-cols-3">

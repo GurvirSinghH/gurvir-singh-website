@@ -115,14 +115,14 @@ The basic picture I wrote down was:
 The example used an architecture similar to an autoencoder.
 
 The high-dimensional data is passed through an encoder and
-compressed into a lower-dimensional state, which I noted as \(z\).
+compressed into a lower-dimensional state, which I noted as z.
 
 The decoder can then use this lower-dimensional representation to
 reconstruct the original data.
 
 Conceptually:
 
-**High-dimensional data → encoder → low-dimensional state \(z\) → decoder → reconstructed data**
+**High-dimensional data → encoder → low-dimensional state z → decoder → reconstructed data**
 
 The goal is to find a useful lower-dimensional representation of
 the original system.

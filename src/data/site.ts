@@ -34,7 +34,7 @@ export const site = {
     specialization: "Artificial Intelligence & Data Science",
     institution: "GNA University, Phagwara, Punjab, India",
     year: "3rd year",
-    cgpa: "8.13 / 10",
+    cgpa: "8.13/10",
     expectedGraduation: "2028",
   },
 
@@ -56,6 +56,6 @@ export const site = {
     broader: ["Scientific Computing", "Software Engineering"],
   },
 
-  languages: ["Python", "C++", "C", "Java", "Html", "CSS"],
+  languages: ["Python", "C++", "C", "Java", "HTML", "CSS"],
   mlTools: ["NumPy", "Pandas", "Scikit-learn", "Matplotlib", "Seaborn", "Plotly", "Streamlit"],
 };
